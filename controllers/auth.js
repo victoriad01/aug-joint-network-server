@@ -11,7 +11,7 @@ export const signUp = async (req, res, next) => {
     const newUser = new Users({ ...req.body, password: hash })
     // saving the user to db
     await newUser.save()
-    res.status(200).json(req.body.name + 'was created as a user!')
+    res.status(200).json(req.body.name + 'added as a user!')
   } catch (error) {
     next(error)
   }
