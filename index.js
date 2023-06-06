@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 
@@ -10,6 +11,7 @@ import cookieParser from 'cookie-parser'
 dotenv.config()
 
 const app = express()
+app.use(cors())
 
 // Connect to mongodb using mongoose and called in app.listen below
 const connect = () => {
