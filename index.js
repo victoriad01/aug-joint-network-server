@@ -44,5 +44,5 @@ app.use((err, req, res, next) => {
 
 app.listen(5000, () => {
   connect()
-  console.log('Connected!')
+  console.log('Hello, Connected!')
 })
