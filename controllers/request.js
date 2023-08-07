@@ -29,7 +29,6 @@ export const getPrayerRequestRandomly = async (req, res, next) => {
     const allPrayers = await Prayer_request.find()
     const item = Math.floor(Math.random() * (allPrayers.length + 1))
     const randomPrayer = allPrayers[item]
-
     res.status(200).json(randomPrayer.d_request)
   } catch (error) {
     next(error)

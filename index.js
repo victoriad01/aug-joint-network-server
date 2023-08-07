@@ -1,12 +1,4 @@
 import express from 'express'
-
-import https from 'https'
-import http from 'http'
-
-import path from 'path'
-
-import fs from 'fs'
-
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
@@ -19,24 +11,9 @@ import cookieParser from 'cookie-parser'
 dotenv.config()
 
 const app = express()
-
-// const httpPort = 80
-const httpsPort = 3443
+const httpPort = 80
 
 app.use(cors())
-
-// Redirect all HTTP traffic to HTTPS
-app.use((req, res, next) => {
-  if (!req.secure) {
-    return res.redirect(`https://${req.headers.host}${req.url}`)
-  }
-  next()
-})
-
-const httpsOptions = {
-  key: fs.readFileSync('./cert/key.pem'),
-  cert: fs.readFileSync('./cert/cert.pem'),
-}
 
 const connect = () => {
   mongoose
@@ -48,12 +25,14 @@ const connect = () => {
       throw err
     })
 }
+const BASE_API_AND_APP_VERS = '/api/v1'
 
 app.use(cookieParser())
 app.use(express.json())
-app.use('/api/users', userRoutes)
-app.use('/api/auth', authRoutes)
-app.use('/api/request', requestRoutes)
+
+app.use(`${BASE_API_AND_APP_VERS}/users`, userRoutes)
+app.use(`${BASE_API_AND_APP_VERS}/auth`, authRoutes)
+app.use(`${BASE_API_AND_APP_VERS}/request`, requestRoutes)
 
 app.use((err, req, res, next) => {
   const status = err.status || 500
@@ -66,22 +45,7 @@ app.use((err, req, res, next) => {
   })
 })
 
-// app.listen(5000, () => {
-//   connect()
-//   console.log('Hello, Connected!')
-// })
-
-// Create and start the HTTP server
-// const httpServer = http.createServer(app)
-// httpServer.listen(httpPort, () => {
-//   connect()
-//   console.log(`HTTP server listening on port ${httpPort}`)
-// })
-
-// Create and start the HTTPS server
-const httpsServer = https.createServer(httpsOptions, app)
-
-httpsServer.listen(httpsPort, () => {
+app.listen(httpPort, () => {
   connect()
-  console.log(`HTTPS server listening on port ${httpsPort}`)
+  console.log('Hello, Connected!')
 })
