@@ -47,5 +47,5 @@ app.use((err, req, res, next) => {
 
 app.listen(httpPort, () => {
   connect()
-  console.log('Hello, Connected!')
+  console.log('Server Connected!')
 })
